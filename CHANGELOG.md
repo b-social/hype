@@ -7,6 +7,8 @@ and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.0.17] — 2019-09-10
 ### Added
 - Support for query parameters and query template parameters to 
   `absolute-url-for`.
@@ -24,4 +26,5 @@ and this project adheres to
 Released without _CHANGELOG.md_.
 
 [0.0.16]: https://github.com/b-social/hype/compare/0.0.1...0.0.16
-[Unreleased]: https://github.com/b-social/hype/compare/0.0.16...HEAD
+[0.0.17]: https://github.com/b-social/hype/compare/0.0.16...0.0.17
+[Unreleased]: https://github.com/b-social/hype/compare/0.0.17...HEAD
