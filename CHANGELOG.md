@@ -7,10 +7,20 @@ and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Support for query parameters and query template parameters to 
+  `absolute-url-for`.
+- An `absolute-path-for` function for generating path component only.
+- An `absolute-path->absolute-url` function for resolving an absolute path
+  against the base URL from a request. 
+
+### Changed
+- The signature of `absolute-url-for` (breaking).
+
+### Removed
+- `parameterised-url-for` since `absolute-url-for` supersedes its functionality. 
 
 ## [0.0.16] — 2019-09-10
-
-## [0.0.1] — 2019-05-22
 Released without _CHANGELOG.md_.
 
 [0.0.16]: https://github.com/b-social/hype/compare/0.0.1...0.0.16
