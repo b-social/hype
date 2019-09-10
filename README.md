@@ -7,7 +7,7 @@ URL generation functions for bidi.
 Add the following to your `project.clj` file:
 
 ```clj
-[b-social/hype "0.0.1"]
+[b-social/hype "0.0.16"]
 ```
 
 ## Documentation
