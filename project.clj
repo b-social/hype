@@ -1,4 +1,4 @@
-(defproject b-social/hype "0.0.17"
+(defproject b-social/hype "0.0.18-SNAPSHOT"
   :description "URL generation functions for bidi."
   :url "https://github.com/b-social/hype"
 
