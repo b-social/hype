@@ -203,11 +203,11 @@
         {:path-params {:id 10}})
       ; => \"https://localhost:8080/articles/10/article.html\"
 
-      (absolute-url-for routes :article
+      (absolute-url-for request routes :article
         {:path-template-params {:id :article-id}})
       ; => \"https://localhost:8080/articles/{articleId}/article.html\"
 
-      (absolute-url-for routes :article
+      (absolute-url-for request routes :article
         {:path-template-params {:id :articleID}
          :path-template-param-key-fn clojure.core/identity})
       ; => \"https://localhost:8080/articles/{articleID}/article.html\"
