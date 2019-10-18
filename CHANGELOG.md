@@ -7,6 +7,8 @@ and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [1.0.0] — 2019-10-18
 ### Added
 - Prepare for 1.0.0 release.
 
@@ -56,4 +58,5 @@ Released without _CHANGELOG.md_.
 [0.0.19]: https://github.com/b-social/hype/compare/0.0.18...0.0.19
 [0.0.20]: https://github.com/b-social/hype/compare/0.0.19...0.0.20
 [0.0.21]: https://github.com/b-social/hype/compare/0.0.20...0.0.21
-[Unreleased]: https://github.com/b-social/hype/compare/0.0.21...HEAD
+[1.0.0]: https://github.com/b-social/hype/compare/0.0.21...1.0.0
+[Unreleased]: https://github.com/b-social/hype/compare/1.0.0...HEAD
