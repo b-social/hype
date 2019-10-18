@@ -71,6 +71,17 @@ Query parameters are also supported when generating a path:
 ; => "/articles?page=2&perPage=10"
 ```
 
+As can be seen, query parameter keys are automatically converted to camel case.
+This behaviour can be overridden as follows:
+
+```clojure
+(hype/absolute-path-for routes :articles
+  {:query-params {:page 2
+                  :per-page 10}
+   :query-param-key-fn clojure.core/identity})
+; => "/articles?page=2&per-page=10"
+```
+
 Both path and query parameters can be provided together:
 
 ```clojure
@@ -86,6 +97,16 @@ When paths need to include query string template parameters:
 (hype/absolute-path-for routes :articles
   {:query-template-params [:page :per-page]})
 ; => "/articles{?page,perPage}"
+```
+
+Again, query template parameter keys are converted to camel case by default.
+This behaviour can be overridden as follows:
+
+```clojure
+(hype/absolute-path-for routes :articles
+  {:query-template-params [:page :per-page]
+   :query-template-param-key-fn clojure.core/identity})
+; => "/articles{?page,per-page}"
 ```
 
 Query string template parameters can be used in addition to path parameters
