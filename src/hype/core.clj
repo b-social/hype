@@ -71,6 +71,11 @@
     - `params` is an optional map which optionally includes any of:
       - `path-params`: parameters defined in the bidi routes as route patterns,
         specified as a map,
+      - `path-template-params`: parameters that should remain templatable in
+        the resulting path, specified as a map from path parameter name to
+        template variable name, as keywords.
+      - `path-template-param-key-fn`: a function to apply to path template
+        variable names before including in the path, camel casing by default.
       - `query-params`: parameters that should be appended to the path as query
         string parameters, specified as a map,
       - `query-param-key-fn`: a function to apply to query parameter keys before
@@ -78,8 +83,8 @@
       - `query-template-params`: parameters that should be appended to the path
         as query string template parameters, specified as a sequence of
         parameter names,
-      - `query-template-param-key-fn`: a function to apply to query parameter
-        template keys before including in the path, camel casing by default.
+      - `query-template-param-key-fn`: a function to apply to query template
+        parameter keys before including in the path, camel casing by default.
 
   The path is returned as a string.
 
@@ -95,6 +100,15 @@
       (absolute-path-for routes :article
         {:path-params {:id 10}})
       ; => \"/articles/10/article.html\"
+
+      (absolute-path-for routes :article
+        {:path-template-params {:id :article-id}})
+      ; => \"/articles/{articleId}/article.html\"
+
+      (absolute-path-for routes :article
+        {:path-template-params {:id :articleID}
+         :path-template-param-key-fn clojure.core/identity})
+      ; => \"/articles/{articleID}/article.html\"
 
       (absolute-path-for routes :article-index
         {:query-params {:latest true
@@ -156,6 +170,11 @@
     - `params` is an optional map which optionally includes any of:
       - `path-params`: parameters defined in the bidi routes as route patterns,
         specified as a map,
+      - `path-template-params`: parameters that should remain templatable in
+        the resulting path, specified as a map from path parameter name to
+        template variable name, as keywords.
+      - `path-template-param-key-fn`: a function to apply to path template
+        variable names before including in the path, camel casing by default.
       - `query-params`: parameters that should be appended to the path as query
         string parameters, specified as a map,
       - `query-param-key-fn`: a function to apply to query parameter keys before
@@ -183,6 +202,15 @@
       (absolute-url-for request routes :article
         {:path-params {:id 10}})
       ; => \"https://localhost:8080/articles/10/article.html\"
+
+      (absolute-url-for routes :article
+        {:path-template-params {:id :article-id}})
+      ; => \"https://localhost:8080/articles/{articleId}/article.html\"
+
+      (absolute-url-for routes :article
+        {:path-template-params {:id :articleID}
+         :path-template-param-key-fn clojure.core/identity})
+      ; => \"https://localhost:8080/articles/{articleID}/article.html\"
 
       (absolute-url-for request routes :article-index
         {:query-params {:latest true

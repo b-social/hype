@@ -9,6 +9,8 @@ and this project adheres to
 ## [Unreleased]
 ### Added
 - Support for path template parameters.
+- Support for path template parameter key conversion.
+- Updated documentation for path template parameters and key conversion.
 
 ## [0.0.20] — 2019-10-18
 ### Added

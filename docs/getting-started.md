@@ -13,7 +13,7 @@ for converting between the two.
 
 * path parameters,
 * query parameters,
-* query template parameters.
+* [URI templates](https://tools.ietf.org/html/rfc6570).
 
 ## <a name="requiring-hype"></a> Requiring `hype`
 
@@ -52,6 +52,24 @@ If the route requires a path parameter, such as in the `:article` route above:
 ; => "/articles/26"
 ```
 
+To leave the path parameter templated for use in URI templates:
+
+```clojure
+(hype/absolute-path-for routes :article
+  {:path-template-params {:article-id :article-id}})
+; => "/articles/{articleId}"
+```
+
+Path template parameters are automatically converted to camel case. This 
+behaviour can be overridden as follows:
+
+```clojure
+(hype/absolute-path-for routes :article
+  {:path-template-params {:article-id :articleID}
+   :path-template-param-key-fn clojure.core/identity})
+; => "/articles/{articleID}"
+```
+
 If the route requires multiple path parameters, such as in the 
 `:article-section` route above:
 
@@ -71,8 +89,8 @@ Query parameters are also supported when generating a path:
 ; => "/articles?page=2&perPage=10"
 ```
 
-As can be seen, query parameter keys are automatically converted to camel case.
-This behaviour can be overridden as follows:
+As for path template parameters, query parameter keys are automatically 
+converted to camel case. This behaviour can be overridden as follows:
 
 ```clojure
 (hype/absolute-path-for routes :articles
@@ -147,6 +165,11 @@ to [[absolute-url-for]], for example:
 (hype/absolute-url-for request routes :article
   {:path-params {:article-id 26}})
 ; => "https://localhost:8080/articles/26"
+
+(hype/absolute-url-for request routes :article
+  {:path-template-params {:article-id :articleID}
+   :path-template-param-key-fn clojure.core/identity})
+; => "https://localhost:8080/articles/{articleID}"
 
 (hype/absolute-url-for request routes :articles
   {:query-template-params [:page :per-page]})
