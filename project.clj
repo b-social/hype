@@ -1,5 +1,5 @@
 (defproject b-social/hype "0.0.18-SNAPSHOT"
-  :description "URL generation functions for bidi."
+  :description "Hypermedia functions for bidi and ring."
   :url "https://github.com/b-social/hype"
 
   :license {:name "The MIT License"
@@ -17,20 +17,23 @@
             [lein-kibit "0.1.6"]
             [lein-bikeshed "0.5.1"]]
 
-  :profiles {:shared {:dependencies
-                      [[org.clojure/clojure "1.10.0"]
-                       [ring/ring-mock "0.4.0"]
-                       [eftest "0.5.8"]]}
-             :dev    [:shared {:source-paths ["dev"]
-                               :eftest       {:multithread? false}}]
-             :test   [:shared {:eftest {:multithread? false}}]}
+  :profiles
+  {:shared {:dependencies
+            [[org.clojure/clojure "1.10.0"]
+             [ring/ring-mock "0.4.0"]
+             [eftest "0.5.8"]]}
+   :dev    [:shared {:source-paths ["dev"]
+                     :eftest       {:multithread? false}}]
+   :test   [:shared {:eftest {:multithread? false}}]}
 
   :cloverage
   {:ns-exclude-regex [#"^user"]}
 
   :codox
   {:namespaces  [#"^hype\."]
+   :metadata    {:doc/format :markdown}
    :output-path "docs"
+   :doc-paths   ["docs"]
    :source-uri  "https://github.com/b-social/hype/blob/{version}/{filepath}#L{line}"}
 
   :cljfmt {:indents ^:replace {#".*" [[:inner 0]]}}

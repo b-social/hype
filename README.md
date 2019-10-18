@@ -1,6 +1,6 @@
 # hype
 
-URL generation functions for bidi.
+Hypermedia functions for `bidi` and `ring`.
 
 ## Install
 
