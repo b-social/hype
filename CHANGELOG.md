@@ -9,10 +9,20 @@ and this project adheres to
 ## [Unreleased]
 
 ## [0.0.20] — 2019-10-18
+### Added
+- Further documentation in the Getting Started guide.
 
 ## [0.0.19] — 2019-10-18
+### Added
+- Customisable query parameter key conversion.
+
+### Changed
+- Query parameter and query template parameter keys are now camel cased by
+  default.
 
 ## [0.0.18] — 2019-10-18
+### Added
+- Full documentation including Getting Started guide.
 
 ## [0.0.17] — 2019-09-10
 ### Added
