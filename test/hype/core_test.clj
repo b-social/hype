@@ -4,6 +4,8 @@
 
     [ring.mock.request :as ring]
 
+    [camel-snake-kebab.core :as csk]
+
     [hype.core :as hype]))
 
 (deftest base-url-for
@@ -58,6 +60,25 @@
               {:query-params {:key1 "value1"
                               :key2 "value2"}})))))
 
+  (testing "camel cases query parameters by default"
+    (let [routes [""
+                  [["/" :root]
+                   ["/examples" :example]]]]
+      (is (= "/examples?perPage=10&sortDirection=descending"
+            (hype/absolute-path-for routes :example
+              {:query-params {:per-page 10
+                              :sort-direction "descending"}})))))
+
+  (testing "uses provided query parameter key function when supplied"
+    (let [routes [""
+                  [["/" :root]
+                   ["/examples" :example]]]]
+      (is (= "/examples?per_page=10&sort_direction=descending"
+            (hype/absolute-path-for routes :example
+              {:query-params {:per-page 10
+                              :sort-direction "descending"}
+               :query-param-key-fn csk/->snake_case_string})))))
+
   (testing "expands query template parameter"
     (let [routes [""
                   [["/" :root]
@@ -81,7 +102,24 @@
       (is (= "/examples?key0=value0{&key1,key2}"
             (hype/absolute-path-for routes :example
               {:query-params {:key0 "value0"}
-               :query-template-params [:key1 :key2]}))))))
+               :query-template-params [:key1 :key2]})))))
+
+  (testing "camel cases query template parameters by default"
+    (let [routes [""
+                  [["/" :root]
+                   ["/examples" :example]]]]
+      (is (= "/examples{?perPage,sortDirection}"
+            (hype/absolute-path-for routes :example
+              {:query-template-params [:per-page :sort-direction]})))))
+
+  (testing "uses provided query template parameter key function when supplied"
+    (let [routes [""
+                  [["/" :root]
+                   ["/examples" :example]]]]
+      (is (= "/examples{?per_page,sort_direction}"
+            (hype/absolute-path-for routes :example
+              {:query-template-params       [:per-page :sort-direction]
+               :query-template-param-key-fn csk/->snake_case_string}))))))
 
 (deftest absolute-url-for
   (testing "returns the absolute URL for a route"
@@ -130,6 +168,27 @@
               {:query-params {:key1 "value1"
                               :key2 "value2"}})))))
 
+  (testing "camel cases query parameters by default"
+    (let [request (ring/request "GET" "https://example.com/some/thing")
+          routes [""
+                  [["/" :root]
+                   ["/examples" :example]]]]
+      (is (= "https://example.com/examples?perPage=10&sortDirection=descending"
+            (hype/absolute-url-for request routes :example
+              {:query-params {:per-page 10
+                              :sort-direction "descending"}})))))
+
+  (testing "uses provided query parameter key function when supplied"
+    (let [request (ring/request "GET" "https://example.com/some/thing")
+          routes [""
+                  [["/" :root]
+                   ["/examples" :example]]]]
+      (is (= "https://example.com/examples?per_page=10&sort_direction=descending"
+            (hype/absolute-url-for request routes :example
+              {:query-params {:per-page 10
+                              :sort-direction "descending"}
+               :query-param-key-fn csk/->snake_case_string})))))
+
   (testing "expands query template parameter"
     (let [request (ring/request "GET" "https://example.com/some/thing")
           routes [""
@@ -156,7 +215,26 @@
       (is (= "https://example.com/examples?key0=value0{&key1,key2}"
             (hype/absolute-url-for request routes :example
               {:query-params {:key0 "value0"}
-               :query-template-params [:key1 :key2]}))))))
+               :query-template-params [:key1 :key2]})))))
+
+  (testing "camel cases query template parameters by default"
+    (let [request (ring/request "GET" "https://example.com/some/thing")
+          routes [""
+                  [["/" :root]
+                   ["/examples" :example]]]]
+      (is (= "https://example.com/examples{?perPage,sortDirection}"
+            (hype/absolute-url-for request routes :example
+              {:query-template-params [:per-page :sort-direction]})))))
+
+  (testing "uses provided query template parameter key function when supplied"
+    (let [request (ring/request "GET" "https://example.com/some/thing")
+          routes [""
+                  [["/" :root]
+                   ["/examples" :example]]]]
+      (is (= "https://example.com/examples{?per_page,sort_direction}"
+            (hype/absolute-url-for request routes :example
+              {:query-template-params       [:per-page :sort-direction]
+               :query-template-param-key-fn csk/->snake_case_string}))))))
 
 (deftest absolute-path->absolute-url
   (testing "converts an absolute path to an absolute URL based on the request"

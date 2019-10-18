@@ -67,7 +67,7 @@ Query parameters are also supported when generating a path:
 ```clojure
 (hype/absolute-path-for routes :articles
   {:query-params {:page 2
-                  :perPage 10}})
+                  :per-page 10}})
 ; => "/articles?page=2&perPage=10"
 ```
 
@@ -76,7 +76,7 @@ Both path and query parameters can be provided together:
 ```clojure
 (hype/absolute-path-for routes :article
   {:path-params {:article-id 26}
-   :query-params {:includeAllSections true}})
+   :query-params {:include-all-sections true}})
 ; => "/articles/26?includeAllSections=true"
 ```
 
@@ -84,7 +84,7 @@ When paths need to include query string template parameters:
 
 ```clojure
 (hype/absolute-path-for routes :articles
-  {:query-template-params [:page :perPage]})
+  {:query-template-params [:page :per-page]})
 ; => "/articles{?page,perPage}"
 ```
 
@@ -94,8 +94,8 @@ and other query string parameters:
 ```clojure
 (hype/absolute-path-for routes :article
   {:path-params {:article-id 26}
-   :query-params {:includeAllSections true}
-   :query-template-params [:includeSummary]})
+   :query-params {:include-all-sections true}
+   :query-template-params [:include-summary]})
 ; => "/articles/26?includeAllSections=true{&includeSummary}"
 ```
 
@@ -128,13 +128,13 @@ to [[absolute-url-for]], for example:
 ; => "https://localhost:8080/articles/26"
 
 (hype/absolute-url-for request routes :articles
-  {:query-template-params [:page :perPage]})
+  {:query-template-params [:page :per-page]})
 ; => "https://localhost:8080/articles{?page,perPage}"
 
 (hype/absolute-url-for request routes :article
   {:path-params {:article-id 26}
-   :query-params {:includeAllSections true}
-   :query-template-params [:includeSummary]})
+   :query-params {:include-all-sections true}
+   :query-template-params [:include-summary]})
 ; => "https://localhost:8080/articles/26?includeAllSections=true{&includeSummary}"
 ```
 

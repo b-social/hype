@@ -5,7 +5,8 @@
   :license {:name "The MIT License"
             :url  "https://opensource.org/licenses/MIT"}
 
-  :dependencies [[bidi "2.1.6"]]
+  :dependencies [[bidi "2.1.6"]
+                 [camel-snake-kebab "0.4.0"]]
 
   :plugins [[lein-cloverage "1.0.13"]
             [lein-shell "0.5.0"]
@@ -63,5 +64,6 @@
                          ["cljfmt" "fix"]
                          ["with-profile" "test" "bikeshed"
                           "--name-collisions" "false"
+                          "--long-lines" "false"
                           "--verbose" "true"]
                          ["test"]]})

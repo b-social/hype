@@ -10,21 +10,30 @@
     [clojure.string :as string]
 
     [bidi.bidi :refer [path-for]]
-    [ring.util.codec :as codec]))
+    [ring.util.codec :as codec]
+    [camel-snake-kebab.core :as csk]))
 
-(defn- query-string-for [parameters]
+(defn- query-string-for
+  [parameters {:keys [key-fn]
+               :or   {key-fn csk/->camelCaseString}}]
   (if (seq parameters)
-    (str "?" (codec/form-encode parameters))
+    (str "?"
+      (codec/form-encode
+        (reduce-kv
+          (fn [acc k v] (assoc acc (key-fn k) v))
+          {}
+          parameters)))
     ""))
 
 (defn- query-template-for
-  ([parameter-names] (query-template-for "?" parameter-names))
-  ([expansion-character parameter-names]
-    (if (seq parameter-names)
-      (str "{" expansion-character
-        (string/join "," (map name parameter-names))
-        "}")
-      "")))
+  [parameter-names {:keys [expansion-character key-fn]
+                    :or   {expansion-character "?"
+                           key-fn              csk/->camelCaseString}}]
+  (if (seq parameter-names)
+    (str "{" expansion-character
+      (string/join "," (map key-fn parameter-names))
+      "}")
+    ""))
 
 (defn base-url-for
   "Returns the URL used to reach the server based on `request`.
@@ -55,9 +64,13 @@
         specified as a map,
       - `query-params`: parameters that should be appended to the path as query
         string parameters, specified as a map,
+      - `query-param-key-fn`: a function to apply to query parameter keys before
+        including in the path, camel casing by default,
       - `query-template-params`: parameters that should be appended to the path
         as query string template parameters, specified as a sequence of
-        parameter names.
+        parameter names,
+      - `query-template-param-key-fn`: a function to apply to query parameter
+        template keys before including in the path, camel casing by default.
 
   The path is returned as a string.
 
@@ -76,25 +89,44 @@
 
       (absolute-path-for routes :article-index
         {:query-params {:latest true
-                        :sort \"descending\"}
-         :query-template-params [:perPage :page]})
-      ; => \"/articles/index.html?latest=true&sort=descending{&perPage,page}\"
+                        :sort-direction \"descending\"}
+         :query-template-params [:per-page :page]})
+      ; => \"/articles/index.html?latest=true&sortDirection=descending{&perPage,page}\"
 
       (absolute-path-for routes :article
         {:path-params {:id 10}
-         :query-template-params [:includeAuthor, :includeImages]})
-      ; => \"/articles/10/article.html{?includeAuthor,includeImages}\""
+         :query-template-params [:include-author, :include-images]})
+      ; => \"/articles/10/article.html{?includeAuthor,includeImages}\"
+
+      (absolute-path-for routes :article-index
+        {:query-params {:latest true
+                        :sort-direction \"descending\"}
+         :query-param-key-fn clojure.core/identity
+         :query-template-params [:per-page :page]
+         :query-template-param-key-fn clojure.core/identity})
+      ; => \"/articles/index.html?latest=true&sort-direction=descending{&per-page,page}\""
   ([routes handler] (absolute-path-for routes handler {}))
   ([routes handler
-    {:keys [path-params query-params query-template-params]
-     :or {query-params {}}
-     :as params}]
+    {:keys [path-params
+            query-params
+            query-param-key-fn
+            query-template-params
+            query-template-param-key-fn]
+     :or   {path-params                 {}
+            query-params                {}
+            query-param-key-fn          csk/->camelCaseString
+            query-template-params       []
+            query-template-param-key-fn csk/->camelCaseString}
+     :as   params}]
     (str
       (apply path-for routes handler (mapcat seq path-params))
-      (query-string-for query-params)
+      (query-string-for
+        query-params
+        {:key-fn query-param-key-fn})
       (query-template-for
-        (if (empty? query-params) "?" "&")
-        query-template-params))))
+        query-template-params
+        {:expansion-character (if (empty? query-params) "?" "&")
+         :key-fn              query-template-param-key-fn}))))
 
 (defn absolute-url-for
   "Builds an absolute URL for `handler` based on `request`, `routes` and
@@ -107,9 +139,13 @@
         specified as a map,
       - `query-params`: parameters that should be appended to the path as query
         string parameters, specified as a map,
+      - `query-param-key-fn`: a function to apply to query parameter keys before
+        including in the path, camel casing by default,
       - `query-template-params`: parameters that should be appended to the path
         as query string template parameters, specified as a sequence of
-        parameter names.
+        parameter names,
+      - `query-template-param-key-fn`: a function to apply to query parameter
+        template keys before including in the path, camel casing by default.
 
   The `request` should be a ring request or equivalent. The URL is returned
   as a string.
@@ -131,14 +167,22 @@
 
       (absolute-url-for request routes :article-index
         {:query-params {:latest true
-                        :sort \"descending\"}
-         :query-template-params [:perPage :page]})
-      ; => \"https://localhost:8080/articles/index.html?latest=true&sort=descending{&perPage,page}\"
+                        :sort-direction \"descending\"}
+         :query-template-params [:per-page :page]})
+      ; => \"https://localhost:8080/articles/index.html?latest=true&sortDirection=descending{&perPage,page}\"
 
       (absolute-url-for request routes :article
         {:path-params {:id 10}
-         :query-template-params [:includeAuthor :includeImages]})
-      ; => \"https://localhost:8080/articles/10/article.html{?includeAuthor,includeImages}\""
+         :query-template-params [:include-author :include-images]})
+      ; => \"https://localhost:8080/articles/10/article.html{?includeAuthor,includeImages}\"
+
+      (absolute-url-for request routes :article-index
+        {:query-params {:latest true
+                        :sort-direction \"descending\"}
+         :query-param-key-fn clojure.core/identity
+         :query-template-params [:per-page :page]
+         :query-template-param-key-fn clojure.core/identity})
+      ; => \"https://localhost:8080/articles/index.html?latest=true&sort-direction=descending{&per-page,page}\""
   ([request routes handler] (absolute-url-for request routes handler {}))
   ([request routes handler params]
     (absolute-path->absolute-url
