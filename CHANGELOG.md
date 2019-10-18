@@ -7,6 +7,8 @@ and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.0.21] — 2019-10-18
 ### Added
 - Support for path template parameters.
 - Support for path template parameter key conversion.
@@ -51,4 +53,5 @@ Released without _CHANGELOG.md_.
 [0.0.18]: https://github.com/b-social/hype/compare/0.0.17...0.0.18
 [0.0.19]: https://github.com/b-social/hype/compare/0.0.18...0.0.19
 [0.0.20]: https://github.com/b-social/hype/compare/0.0.19...0.0.20
-[Unreleased]: https://github.com/b-social/hype/compare/0.0.20...HEAD
+[0.0.21]: https://github.com/b-social/hype/compare/0.0.20...0.0.21
+[Unreleased]: https://github.com/b-social/hype/compare/0.0.21...HEAD

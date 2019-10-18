@@ -7,7 +7,7 @@ Hypermedia functions for `bidi` and `ring`.
 Add the following to your `project.clj` file:
 
 ```clj
-[b-social/hype "0.0.20"]
+[b-social/hype "0.0.21"]
 ```
 
 ## Documentation
