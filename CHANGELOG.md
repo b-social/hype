@@ -8,6 +8,8 @@ and this project adheres to
 
 ## [Unreleased]
 
+## [0.0.20] — 2019-10-18
+
 ## [0.0.19] — 2019-10-18
 
 ## [0.0.18] — 2019-10-18
@@ -33,4 +35,5 @@ Released without _CHANGELOG.md_.
 [0.0.17]: https://github.com/b-social/hype/compare/0.0.16...0.0.17
 [0.0.18]: https://github.com/b-social/hype/compare/0.0.17...0.0.18
 [0.0.19]: https://github.com/b-social/hype/compare/0.0.18...0.0.19
-[Unreleased]: https://github.com/b-social/hype/compare/0.0.19...HEAD
+[0.0.20]: https://github.com/b-social/hype/compare/0.0.19...0.0.20
+[Unreleased]: https://github.com/b-social/hype/compare/0.0.20...HEAD
