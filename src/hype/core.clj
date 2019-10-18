@@ -35,6 +35,15 @@
       "}")
     ""))
 
+(defn- path-template-params-for
+  [parameter-definitions {:keys [key-fn]
+                          :or   {key-fn csk/->camelCaseString}}]
+  (reduce-kv
+    (fn [acc k v]
+      (assoc acc k (str "{" (key-fn v) "}")))
+    {}
+    parameter-definitions))
+
 (defn base-url-for
   "Returns the URL used to reach the server based on `request`.
 
@@ -108,18 +117,28 @@
   ([routes handler] (absolute-path-for routes handler {}))
   ([routes handler
     {:keys [path-params
+            path-template-params
+            path-template-param-key-fn
             query-params
             query-param-key-fn
             query-template-params
             query-template-param-key-fn]
      :or   {path-params                 {}
+            path-template-params        {}
+            path-template-param-key-fn  csk/->camelCaseString
             query-params                {}
             query-param-key-fn          csk/->camelCaseString
             query-template-params       []
             query-template-param-key-fn csk/->camelCaseString}
      :as   params}]
     (str
-      (apply path-for routes handler (mapcat seq path-params))
+      (apply path-for routes handler
+        (mapcat seq
+          (merge
+            (path-template-params-for
+              path-template-params
+              {:key-fn path-template-param-key-fn})
+            path-params)))
       (query-string-for
         query-params
         {:key-fn query-param-key-fn})

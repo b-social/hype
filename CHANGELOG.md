@@ -7,6 +7,8 @@ and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Support for path template parameters.
 
 ## [0.0.20] — 2019-10-18
 ### Added
