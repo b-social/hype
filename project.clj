@@ -1,4 +1,4 @@
-(defproject b-social/hype "0.0.19-SNAPSHOT"
+(defproject b-social/hype "0.0.19"
   :description "Hypermedia functions for bidi and ring."
   :url "https://github.com/b-social/hype"
 
