@@ -44,11 +44,11 @@ For example:
 ; => "/"
 
 (absolute-path-for routes :article
-  {:path-params {:id 10}})
+  {:path-params {:article-id 10}})
 ; => "/articles/10"
 
 (absolute-path-for routes :article
-  {:path-template-params {:id :article-id}})
+  {:path-template-params {:article-id :article-id}})
 ; => "/articles/{articleId}"
 
 (absolute-path-for routes :article-index
@@ -61,12 +61,12 @@ For example:
 ; => "https://localhost:8080/"
 
 (absolute-url-for request routes :article
-  {:path-template-params {:id :articleID}
+  {:path-template-params {:article-id :articleID}
    :path-template-param-key-fn clojure.core/identity})
 ; => "https://localhost:8080/articles/{articleID}"
 
 (absolute-url-for request routes :article
-  {:path-params {:id 10}
+  {:path-params {:article-id 10}
    :query-template-params [:include-author :include-images]})
 ; => "https://localhost:8080/articles/10{?includeAuthor,includeImages}"
 
